@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <script>
+  if (localStorage.getItem('theme') === 'dark') {
+    document.documentElement.classList.add('dark');
+  }
+</script>
+<link rel="stylesheet" href="style.css">
+ 
+</head>
+<body>
+  
+  <h2>Product Management</h2>
+  <p id="userRole"></p>
+  <button id="themeToggle">🌙 Dark Mode</button>
+  <button id="logoutBtn">Logout</button>
+
+  <div id="productList"></div>
+
+  <div id="adminPanel" style="display:none;">
+    <h3>Add / Edit Product</h3>
+    <form id="productForm">
+      <input type="hidden" id="productId">
+      <input type="text" id="productName" placeholder="Product Name" required>
+      <input type="number" id="productPrice" placeholder="Price" required>
+      <input type="text" id="productCategory" placeholder="Category" required>
+      <button type="submit">Save</button>
+    </form>
+  </div>
+  <script src="theme.js"></script>
+  <script src="products.js"></script>
+  
+
+</body>
+</html>

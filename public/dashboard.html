@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <script>
+  if (localStorage.getItem('theme') === 'dark') {
+    document.documentElement.classList.add('dark');
+  }
+</script>
+<link rel="stylesheet" href="style.css">
+
+  
+</head>
+<body>
+  <div class="dashboard">
+     <button id="themeToggle">🌙 Dark Mode</button>
+    <h2>Commodity Dashboard</h2>
+    <nav>
+  <a href="products.html">Products</a>
+  </nav>
+
+    <p id="userInfo"></p>
+    <div id="stats"></div>
+    <div id="insights"></div>
+    <button id="logoutBtn">Logout</button>
+  </div>
+   <script src="theme.js"></script>
+  <script src="dashboard.js"></script>
+ 
+</body>
+</html>

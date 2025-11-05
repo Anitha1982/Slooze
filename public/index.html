@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <script>
+  if (localStorage.getItem('theme') === 'dark') {
+    document.documentElement.classList.add('dark');
+  }
+</script>
+<link rel="stylesheet" href="style.css">
+
+  
+</head>
+  
+<body>
+ 
+  <div class="login-container">
+    
+    <h1>Login</h1>
+    <form id="loginForm">
+      <button id="themeToggle">🌙 Dark Mode</button>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="you@example.com" required>
+        <small class="error" id="emailError"></small>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="••••••••" required>
+        <small class="error" id="passwordError"></small>
+      </div>
+
+      <button type="submit" id="loginBtn">Login</button>
+      <p class="message" id="serverMessage"></p>
+    </form>
+  </div>
+  <script src="theme.js"></script>
+  <script src="script.js"></script>
+  
+
+</body>
+</html>
