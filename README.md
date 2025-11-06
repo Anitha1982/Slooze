@@ -26,7 +26,9 @@ Storekeeper	       Can add/edit products (no dashboard access)
 Default Credentials
 
 Role	           Email	               Password
+
 Manager	     manager@example.com        manager123
+
 Storekeeper	 store@example.com        	store123
 
 Technologies Used
