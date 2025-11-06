@@ -47,10 +47,11 @@ app.post("/auth/login", (req, res) => {
   sessions[token] = { userId: user.id, role: user.role };
 
   res.cookie("session_token", token, {
-    httpOnly: true,
-    sameSite: "Lax",
-    secure: process.env.NODE_ENV === "production",
-  });
+  httpOnly: true,
+  sameSite: "None",
+  secure: true, // Render uses HTTPS
+});
+
 
   res.json({ message: "Login successful", role: user.role });
 });
