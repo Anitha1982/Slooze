@@ -20,10 +20,11 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // Serve static files from "public" folder
-app.use(express.static(path.join(__dirname, 'client', 'build')));
+app.use(express.static(path.join(__dirname, 'public')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
 
 
 //  USERS list:
@@ -159,8 +160,9 @@ app.get('/dashboard/data', authenticate, authorize(['manager']), (req, res) => {
 // FALLBACK - for any unknown route
 // ===============================
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.status(404).json({ message: 'Not Found' });
 });
+
 
 // ===============================
 // START SERVER
