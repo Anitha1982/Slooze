@@ -9,30 +9,35 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT ||4000;
+const PORT = process.env.PORT || 4000;
 
-// Middleware
+// ===============================
+// MIDDLEWARE
+// ===============================
 app.use(cors({
-  origin: 'https://commodities-api.netlify.app', // frontend served by same server
+  origin: 'https://commodities-api.netlify.app', // your Netlify site
   credentials: true
 }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-// Serve static files from "public" folder
+// ===============================
+// STATIC FILES (for Render hosting)
+// ===============================
 app.use(express.static(path.join(__dirname, 'public')));
-app.get('*', (req, res) => {
+
+// Serve index.html for any unknown route (Fix: use '/*' instead of '*')
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-
-
-//  USERS list:
+// ===============================
+// USER DATA (for demo)
+// ===============================
 const USERS = [
   { id: 1, email: 'manager@example.com', password: 'manager123', role: 'manager' },
   { id: 2, email: 'store@example.com', password: 'store123', role: 'storekeeper' }
 ];
-
 
 // In-memory session store
 const sessions = {};
@@ -54,7 +59,7 @@ app.post('/auth/login', (req, res) => {
   res.cookie('session_token', token, {
     httpOnly: true,
     sameSite: 'Lax',
-    secure: false // set to true if using HTTPS
+    secure: true // ✅ Important for HTTPS on Render/Netlify
   });
 
   res.json({ message: 'Login successful', role: user.role });
@@ -93,7 +98,7 @@ let PRODUCTS = [
   { id: 3, name: 'Wheat', category: 'Grain', price: 50 }
 ];
 
-// Middleware to verify session before product routes
+// Middleware: verify session before routes
 function authenticate(req, res, next) {
   const token = req.cookies.session_token;
   if (!token || !sessions[token]) {
@@ -103,7 +108,7 @@ function authenticate(req, res, next) {
   next();
 }
 
-// Helper to check role
+// Role-based access
 function authorize(allowedRoles) {
   return (req, res, next) => {
     const role = req.session.role;
@@ -114,12 +119,12 @@ function authorize(allowedRoles) {
   };
 }
 
-// GET /products - fetch all
+// GET all products
 app.get('/products', authenticate, authorize(['manager', 'storekeeper']), (req, res) => {
   res.json(PRODUCTS);
 });
 
-// POST - Add product (both roles)
+// POST add product
 app.post('/products', authenticate, authorize(['manager', 'storekeeper']), (req, res) => {
   const { name, price, category } = req.body;
   const newProduct = { id: PRODUCTS.length + 1, name, price, category };
@@ -127,7 +132,7 @@ app.post('/products', authenticate, authorize(['manager', 'storekeeper']), (req,
   res.json({ message: 'Product added successfully', product: newProduct });
 });
 
-// PUT - Edit product (both roles)
+// PUT edit product
 app.put('/products/:id', authenticate, authorize(['manager', 'storekeeper']), (req, res) => {
   const product = PRODUCTS.find(p => p.id == req.params.id);
   if (!product) return res.status(404).json({ message: 'Product not found' });
@@ -136,14 +141,13 @@ app.put('/products/:id', authenticate, authorize(['manager', 'storekeeper']), (r
   res.json({ message: 'Product updated successfully', product });
 });
 
-
 // ===============================
-// DASHBOARD DATA (role-based access)
+// DASHBOARD DATA (manager only)
 // ===============================
 app.get('/dashboard/data', authenticate, authorize(['manager']), (req, res) => {
   const totalProducts = PRODUCTS.length;
   const totalValue = PRODUCTS.reduce((sum, p) => sum + p.price, 0);
-  const estimatedProfit = totalValue * 0.2; // assume 20% profit margin
+  const estimatedProfit = totalValue * 0.2;
 
   const stats = {
     products: totalProducts,
@@ -155,18 +159,23 @@ app.get('/dashboard/data', authenticate, authorize(['manager']), (req, res) => {
   res.json({ stats, insights });
 });
 
+// ===============================
+// HEALTH CHECK (for Render)
+// ===============================
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', uptime: process.uptime() });
+});
 
 // ===============================
-// FALLBACK - for any unknown route
+// FALLBACK - 404 JSON
 // ===============================
 app.use((req, res) => {
   res.status(404).json({ message: 'Not Found' });
 });
 
-
 // ===============================
 // START SERVER
 // ===============================
 app.listen(PORT, () => {
-  console.log(`✅ Server running at http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
