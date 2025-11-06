@@ -13,7 +13,7 @@ const PORT = process.env.PORT ||4000;
 
 // Middleware
 app.use(cors({
-  origin: 'https://commodities-api.netlify.app/', // frontend served by same server
+  origin: 'https://commodities-api.netlify.app', // frontend served by same server
   credentials: true
 }));
 app.use(bodyParser.json());
