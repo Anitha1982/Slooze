@@ -9,11 +9,11 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT ||4000;
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:4000', // frontend served by same server
+  origin: 'https://slooze-dhia.onrender.com/', // frontend served by same server
   credentials: true
 }));
 app.use(bodyParser.json());
