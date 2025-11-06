@@ -1,5 +1,5 @@
 async function setupDashboard() {
-  const sessionRes = await fetch('http://localhost:4000/auth/session', { credentials: 'include' });
+  const sessionRes = await fetch('https://slooze-dhia.onrender.com/auth/session', { credentials: 'include' });
   if (!sessionRes.ok) return (window.location.href = '/index.html');
 
   const user = await sessionRes.json();
@@ -21,7 +21,7 @@ async function setupDashboard() {
 setupDashboard();
 
 async function checkSession() {
-  const res = await fetch('http://localhost:4000/auth/session', {
+  const res = await fetch('https://slooze-dhia.onrender.com/auth/session', {
     credentials: 'include'
   });
 
@@ -43,7 +43,7 @@ async function checkSession() {
     `Logged in as: ${user.email} (${user.role})`;
 
   // Fetch dashboard data
-  const dataRes = await fetch('http://localhost:4000/dashboard/data', {
+  const dataRes = await fetch('https://slooze-dhia.onrender.com/dashboard/data', {
     credentials: 'include'
   });
   const data = await dataRes.json();
@@ -54,7 +54,7 @@ async function checkSession() {
 }
 
 document.getElementById('logoutBtn').addEventListener('click', async () => {
-  await fetch('http://localhost:4000/auth/logout', {
+  await fetch('https://slooze-dhia.onrender.com/auth/logout', {
     method: 'POST',
     credentials: 'include'
   });

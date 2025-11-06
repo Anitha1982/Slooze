@@ -2,7 +2,7 @@
 
   async function setupProducts() {
   // Get session info (role + email)
-  const sessionRes = await fetch('http://localhost:4000/auth/session', { credentials: 'include' });
+  const sessionRes = await fetch('https://slooze-dhia.onrender.com/auth/session', { credentials: 'include' });
   if (!sessionRes.ok) return (window.location.href = '/index.html');
   const user = await sessionRes.json();
 
@@ -16,7 +16,7 @@
   }
 
   // Fetch products
-  const res = await fetch('http://localhost:4000/products', { credentials: 'include' });
+  const res = await fetch('https://slooze-dhia.onrender.com/products', { credentials: 'include' });
   const products = await res.json();
 
   // Display products
@@ -36,7 +36,7 @@
 
 // Edit function
 async function editProduct(id) {
-  const res = await fetch('http://localhost:4000/products', { credentials: 'include' });
+  const res = await fetch('https://slooze-dhia.onrender.com/products', { credentials: 'include' });
   const products = await res.json();
   const product = products.find(p => p.id === id);
 
@@ -61,7 +61,7 @@ document.getElementById('productForm').addEventListener('submit', async e => {
   const category = document.getElementById('productCategory').value.trim();
 
   const method = id ? 'PUT' : 'POST';
-  const url = id ? `http://localhost:4000/products/${id}` : `http://localhost:4000/products`;
+  const url = id ? `https://slooze-dhia.onrender.com/products/${id}` : `https://slooze-dhia.onrender.com/products`;
 
   const res = await fetch(url, {
     method,
@@ -82,7 +82,7 @@ document.querySelector('#productForm button[type="submit"]').textContent = 'Add 
 
 // Logout
 document.getElementById('logoutBtn').addEventListener('click', async () => {
-  await fetch('http://localhost:4000/auth/logout', { method: 'POST', credentials: 'include' });
+  await fetch('https://slooze-dhia.onrender.com/auth/logout', { method: 'POST', credentials: 'include' });
   window.location.href = '/index.html';
 });
 
